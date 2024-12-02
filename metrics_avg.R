@@ -5,9 +5,10 @@ alg <- c("LR_80", "SVM_80")
 meth <- c("euclidean", "maximum", "manhattan", "canberra",
           "minkowski")
 
-path <- "C:/Users/Nefeli/Desktop/Lab/Διδακτορικό/Upper Lower Epiph/Lower Limbs/Tibia/"
-path_uni <- "C:/Users/Nefeli/Desktop/Lab/Διδακτορικό/Upper Lower Epiph/Lower Limbs/Femur/Univariate/"
-path_combo <- "C:/Users/Nefeli/Desktop/Lab/Διδακτορικό/Upper Lower Epiph/Lower Limbs/Tibia_combo/"
+#path <- "C:/Users/User01/Desktop/Lab_back_up/Διδακτορικό/Upper Lower Epiph/Lower Limbs/Tibia/"
+path <- "C:/Users/Nefeli/Desktop/Lab/Διδακτορικό/Upper Lower Epiph/Lower Limbs/Femur/"
+path_uni <- "C:/Users/Nefeli/Desktop/Lab/Διδακτορικό/Upper Lower Epiph/Lower Limbs/Tibia/Univariate/"
+#path_combo <- "C:/Users/Nefeli/Desktop/Lab/Διδακτορικό/Upper Lower Epiph/Lower Limbs/Tibia_combo/"
 
 
 ## Accuracy files
@@ -212,7 +213,7 @@ write.csv(results_sd,
 remove(data, pred_20, pred_80, pred_combo,
        results_mean, results_sd, i, k)
 
-## Definitive mismatches
+## Definitive mismatches (combo)
 
 results_mean <- matrix(0, nrow=5, ncol=2)
 results_sd <- matrix(0, nrow=5, ncol=2)
@@ -253,7 +254,213 @@ write.csv(results_sd,
 
 remove(data, results_mean, results_sd, i, k)
 
-## False negatives
+## Definitive mismatches (20%)
+
+results_mean <- matrix(0, nrow=5, ncol=2)
+results_sd <- matrix(0, nrow=5, ncol=2)
+
+for (k in 1:2)
+{
+  setwd(paste0(path, "CV_", alg[k]))
+  
+  for (j in 1:5)
+  {
+    tnr <- 0
+    
+    for (i in 1:20)
+    {
+      data <- read.csv(paste0("Fold_", i, "_stats_20_", meth[j], ".csv"))
+      
+      tnr[i] <- data[3,2]
+      
+    }
+    
+    results_mean[j,k] <- mean(tnr)
+    results_sd[j,k] <- sd(tnr)
+  }
+  
+}
+
+rownames(results_mean) <- meth
+colnames(results_mean) <- alg
+write.csv(results_mean, 
+          paste0(path, "CV_Avg/Mean_mism_20.csv"))
+
+
+rownames(results_sd) <- meth
+colnames(results_sd) <- alg
+
+write.csv(results_sd, 
+          paste0(path, "CV_Avg/SD_mism_20.csv"))
+
+remove(data, results_mean, results_sd, i, k)
+
+## Definitive mismatches (80%)
+
+results_mean <- matrix(0, nrow=5, ncol=2)
+results_sd <- matrix(0, nrow=5, ncol=2)
+
+for (k in 1:2)
+{
+  setwd(paste0(path, "CV_", alg[k]))
+  
+  for (j in 1:5)
+  {
+    tnr <- 0
+    
+    for (i in 1:20)
+    {
+      data <- read.csv(paste0("Fold_", i, "_stats_80_", meth[j], ".csv"))
+      
+      tnr[i] <- data[3,2]
+      
+    }
+    
+    results_mean[j,k] <- mean(tnr)
+    results_sd[j,k] <- sd(tnr)
+  }
+  
+}
+
+rownames(results_mean) <- meth
+colnames(results_mean) <- alg
+write.csv(results_mean, 
+          paste0(path, "CV_Avg/Mean_mism_80.csv"))
+
+
+rownames(results_sd) <- meth
+colnames(results_sd) <- alg
+
+write.csv(results_sd, 
+          paste0(path, "CV_Avg/SD_mism_80.csv"))
+
+remove(data, results_mean, results_sd, i, k)
+
+## # Excluded (combo)
+
+results_mean <- matrix(0, nrow=5, ncol=2)
+results_sd <- matrix(0, nrow=5, ncol=2)
+
+for (k in 1:2)
+{
+  setwd(paste0(path, "CV_", alg[k]))
+  
+  for (j in 1:5)
+  {
+    exc <- 0
+    
+    for (i in 1:20)
+    {
+      data <- read.csv(paste0("Fold_", i, "_stats_", meth[j], ".csv"))
+      
+      exc[i] <- data[3,2]
+      
+    }
+    
+    results_mean[j,k] <- mean(exc)
+    results_sd[j,k] <- sd(exc)
+  }
+  
+}
+
+rownames(results_mean) <- meth
+colnames(results_mean) <- alg
+write.csv(results_mean, 
+          paste0(path, "CV_Avg/Mean_exc.csv"))
+
+
+rownames(results_sd) <- meth
+colnames(results_sd) <- alg
+
+write.csv(results_sd, 
+          paste0(path, "CV_Avg/SD_exc.csv"))
+
+remove(data, results_mean, results_sd, i, k)
+
+## # Excluded (20%)
+
+results_mean <- matrix(0, nrow=5, ncol=2)
+results_sd <- matrix(0, nrow=5, ncol=2)
+
+for (k in 1:2)
+{
+  setwd(paste0(path, "CV_", alg[k]))
+  
+  for (j in 1:5)
+  {
+    exc <- 0
+    
+    for (i in 1:20)
+    {
+      data <- read.csv(paste0("Fold_", i, "_stats_20_", meth[j], ".csv"))
+      
+      exc[i] <- data[2,2]
+      
+    }
+    
+    results_mean[j,k] <- mean(exc)
+    results_sd[j,k] <- sd(exc)
+  }
+  
+}
+
+rownames(results_mean) <- meth
+colnames(results_mean) <- alg
+write.csv(results_mean, 
+          paste0(path, "CV_Avg/Mean_exc_20.csv"))
+
+
+rownames(results_sd) <- meth
+colnames(results_sd) <- alg
+
+write.csv(results_sd, 
+          paste0(path, "CV_Avg/SD_exc_20.csv"))
+
+remove(data, results_mean, results_sd, i, k)
+
+## # Excluded (80%)
+
+results_mean <- matrix(0, nrow=5, ncol=2)
+results_sd <- matrix(0, nrow=5, ncol=2)
+
+for (k in 1:2)
+{
+  setwd(paste0(path, "CV_", alg[k]))
+  
+  for (j in 1:5)
+  {
+    exc <- 0
+    
+    for (i in 1:20)
+    {
+      data <- read.csv(paste0("Fold_", i, "_stats_80_", meth[j], ".csv"))
+      
+      exc[i] <- data[2,2]
+      
+    }
+    
+    results_mean[j,k] <- mean(exc)
+    results_sd[j,k] <- sd(exc)
+  }
+  
+}
+
+rownames(results_mean) <- meth
+colnames(results_mean) <- alg
+write.csv(results_mean, 
+          paste0(path, "CV_Avg/Mean_exc_80.csv"))
+
+
+rownames(results_sd) <- meth
+colnames(results_sd) <- alg
+
+write.csv(results_sd, 
+          paste0(path, "CV_Avg/SD_exc_80.csv"))
+
+remove(data, results_mean, results_sd, i, k)
+
+
+## False negatives (combo)
 
 results_mean <- matrix(0, nrow=5, ncol=2)
 results_sd <- matrix(0, nrow=5, ncol=2)
@@ -291,6 +498,88 @@ colnames(results_sd) <- alg
 
 write.csv(results_sd, 
           paste0(path, "CV_Avg/SD_fn.csv"))
+
+remove(data, results_mean, results_sd, i, k)
+
+## False negatives (20%)
+
+results_mean <- matrix(0, nrow=5, ncol=2)
+results_sd <- matrix(0, nrow=5, ncol=2)
+
+for (k in 1:2)
+{
+  setwd(paste0(path, "CV_", alg[k]))
+  
+  for (j in 1:5)
+  {
+    fn <- 0
+    
+    for (i in 1:20)
+    {
+      data <- read.csv(paste0("Fold_", i, "_stats_20_", meth[j], ".csv"))
+      
+      fn[i] <- data[4,2]
+      
+    }
+    
+    results_mean[j,k] <- mean(fn)
+    results_sd[j,k] <- sd(fn)
+  }
+  
+}
+
+rownames(results_mean) <- meth
+colnames(results_mean) <- alg
+write.csv(results_mean, 
+          paste0(path, "CV_Avg/Mean_fn_20.csv"))
+
+
+rownames(results_sd) <- meth
+colnames(results_sd) <- alg
+
+write.csv(results_sd, 
+          paste0(path, "CV_Avg/SD_fn_20.csv"))
+
+remove(data, results_mean, results_sd, i, k)
+
+## False negatives (80%)
+
+results_mean <- matrix(0, nrow=5, ncol=2)
+results_sd <- matrix(0, nrow=5, ncol=2)
+
+for (k in 1:2)
+{
+  setwd(paste0(path, "CV_", alg[k]))
+  
+  for (j in 1:5)
+  {
+    fn <- 0
+    
+    for (i in 1:20)
+    {
+      data <- read.csv(paste0("Fold_", i, "_stats_80_", meth[j], ".csv"))
+      
+      fn[i] <- data[4,2]
+      
+    }
+    
+    results_mean[j,k] <- mean(fn)
+    results_sd[j,k] <- sd(fn)
+  }
+  
+}
+
+rownames(results_mean) <- meth
+colnames(results_mean) <- alg
+write.csv(results_mean, 
+          paste0(path, "CV_Avg/Mean_fn_80.csv"))
+
+
+rownames(results_sd) <- meth
+colnames(results_sd) <- alg
+
+write.csv(results_sd, 
+          paste0(path, "CV_Avg/SD_fn_80.csv"))
 
 remove(data, results_mean, results_sd, i, k)
 
