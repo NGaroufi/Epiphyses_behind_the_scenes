@@ -1,4 +1,4 @@
-setwd("C:/Users/User01/Desktop/Lab_back_up/Διδακτορικό/Upper Lower Epiph/Lower Limbs")
+setwd("C:/Users/Nefeli/Desktop/Lab/Διδακτορικό/Upper Lower Epiph/Lower Limbs")
 
 # Library loading
 library(readr)
@@ -41,8 +41,6 @@ data <- scale(data)
 
 scaleList <- list(scale = attr(data, "scaled:scale"),
                   center = attr(data, "scaled:center"))
-
-saveRDS(scaleList, paste0("scaling_coefs_", bone, ".rds"))
 
 data <- as.data.frame(data)
 
@@ -164,7 +162,7 @@ pred_80 <- predY
   colnames(true_difs) <- names(test)[1:6]
   for (i in 1:nrow(test))
   {
-    true_difs[i,] <- abs(as.numeric(test[i,1:6] - pred_20[i,]))
+    true_difs[i,] <- abs(as.numeric(unsc_test[i,1:6] - pred_20[i,]))
   }
   
   u_thr_20 <- 0
@@ -172,8 +170,8 @@ pred_80 <- predY
   
   for (i in 1:6)
   {
-    u_thr_20[i] <- mean(true_difs[,i]) + 1.5*sd(true_difs[,i])
-    l_thr_20[i] <- mean(true_difs[,i]) - 1.5*sd(true_difs[,i])
+    u_thr_20[i] <- mean(true_difs[,i]) + 2*sd(true_difs[,i])
+    l_thr_20[i] <- mean(true_difs[,i]) - 2*sd(true_difs[,i])
   }
   
   remove(true_difs)
@@ -183,7 +181,7 @@ pred_80 <- predY
   colnames(true_difs) <- names(test)[7:12]
   for (i in 1:nrow(test))
   {
-    true_difs[i,] <- abs(as.numeric(test[i,7:12] - pred_80[i,]))
+    true_difs[i,] <- abs(as.numeric(unsc_test[i,7:12] - pred_80[i,]))
   }
   
   u_thr_80 <- 0
@@ -191,12 +189,12 @@ pred_80 <- predY
   
   for (i in 1:6)
   {
-    u_thr_80[i] <- mean(true_difs[,i]) + 1.5*sd(true_difs[,i])
-    l_thr_80[i] <- mean(true_difs[,i]) - 1.5*sd(true_difs[,i])
+    u_thr_80[i] <- mean(true_difs[,i]) + 2*sd(true_difs[,i])
+    l_thr_80[i] <- mean(true_difs[,i]) - 2*sd(true_difs[,i])
   }
   
   remove(true_difs)
   
   
   thresholds <- rbind(u_thr_20, l_thr_20, u_thr_80, l_thr_80)
-  write.csv(thresholds, paste0(bone, "_thr_15_", alg, ".csv"))
+  write.csv(thresholds, paste0(bone, "_thr_", alg, ".csv"))

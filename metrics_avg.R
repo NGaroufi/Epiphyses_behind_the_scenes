@@ -1,14 +1,14 @@
 library(readr)
 
-alg <- c("LR_80", "SVM_80")
+alg <- c("SVM_80", "SVM_80")
 
 meth <- c("euclidean", "maximum", "manhattan", "canberra",
           "minkowski")
 
-#path <- "C:/Users/User01/Desktop/Lab_back_up/Διδακτορικό/Upper Lower Epiph/Lower Limbs/Tibia/"
-path <- "C:/Users/Nefeli/Desktop/Lab/Διδακτορικό/Upper Lower Epiph/Lower Limbs/Femur/"
-path_uni <- "C:/Users/Nefeli/Desktop/Lab/Διδακτορικό/Upper Lower Epiph/Lower Limbs/Tibia/Univariate/"
-#path_combo <- "C:/Users/Nefeli/Desktop/Lab/Διδακτορικό/Upper Lower Epiph/Lower Limbs/Tibia_combo/"
+#path <- "C:/Users/User01/Desktop/Lab_back_up/Διδακτορικό/Upper Lower Epiph/Upper Limbs/Humerus/"
+path <- "C:/Users/Nefeli/Desktop/Lab/Διδακτορικό/Upper Lower Epiph/Upper Limbs/Humerus/"
+path_uni <- "C:/Users/Nefeli/Desktop/Lab/Διδακτορικό/Upper Lower Epiph/Upper Limbs/Humerus/Univariate/"
+#path_combo <- "C:/Users/Nefeli/Desktop/Lab/Διδακτορικό/Upper Lower Epiph/Upper Limbs/Humerus_combo/"
 
 
 ## Accuracy files
@@ -459,7 +459,6 @@ write.csv(results_sd,
 
 remove(data, results_mean, results_sd, i, k)
 
-
 ## False negatives (combo)
 
 results_mean <- matrix(0, nrow=5, ncol=2)
@@ -588,7 +587,7 @@ remove(data, results_mean, results_sd, i, k)
 # Total Per Var Accuracy
 for (k in 1:2)
 {
-  setwd(paste0(path_uni, "CV_", alg_uni[k]))
+  setwd(paste0(path_uni, "CV_", alg[k]))
   
   euc <- rep(0, times=12)
   maximum <- rep(0, times=12) 
@@ -618,7 +617,7 @@ for (k in 1:2)
   colnames(results_mean) <- c("Distance", names(data)[2:13])
     
   write.csv(results_mean, 
-            paste0(path_uni, "CV_Avg/Mean_Total_PerVar_Accuracy_", alg_uni[k], ".csv"))
+            paste0(path_uni, "CV_Avg/Mean_Total_PerVar_Accuracy_", alg[k], ".csv"))
     
   results_mean <- matrix(0, nrow=5, ncol=13)
   results_mean[,1] <- data[,1]
@@ -631,7 +630,7 @@ for (k in 1:2)
   colnames(results_mean) <- c("Distance", names(data)[2:13])
   
   write.csv(results_mean, 
-            paste0(path_uni, "CV_Avg/SD_Total_PerVar_Accuracy_", alg_uni[k], ".csv"))
+            paste0(path_uni, "CV_Avg/SD_Total_PerVar_Accuracy_", alg[k], ".csv"))
   
 }
 
@@ -641,7 +640,7 @@ remove(data, euc, maximum, man, cranb, mink,
 # Total Per Var TNR
 for (k in 1:2)
 {
-  setwd(paste0(path_uni, "CV_", alg_uni[k]))
+  setwd(paste0(path_uni, "CV_", alg[k]))
   
   tnr <- rep(0, times=12)
   
@@ -662,7 +661,7 @@ for (k in 1:2)
   results[2,2:13] <- apply(tnr[2:21,], 2, FUN="sd")
   
   write.csv(results, 
-            paste0(path_uni, "CV_Avg/TNR_", alg_uni[k], ".csv"))
+            paste0(path_uni, "CV_Avg/TNR_", alg[k], ".csv"))
   
 }
 
@@ -676,7 +675,7 @@ remove(data, tnr,
 
 for (k in 1:2)
 {
-  setwd(paste0(path_combo, "CV_", alg_uni[k]))
+  setwd(paste0(path_combo, "CV_", alg[k]))
   
   for (j in 1:5)
   {
@@ -712,7 +711,7 @@ for (k in 1:2)
                                 "# - Combo", "% Accuracy - Combo")
     
     write.csv(results_mean, 
-              paste0(path_combo, "CV_Avg/Mean_Accuracy_", alg_uni[k], "_", meth[j], ".csv"))
+              paste0(path_combo, "CV_Avg/Mean_Accuracy_", alg[k], "_", meth[j], ".csv"))
     
     results_sd <- matrix(0, nrow=6, ncol=7)
     results_sd[,1] <- data[,1]
@@ -727,7 +726,7 @@ for (k in 1:2)
                               "% Accuracy - 80", 
                               "# - Combo", "% Accuracy - Combo")
     write.csv(results_sd, 
-              paste0(path_combo, "CV_Avg/SD_Accuracy_", alg_uni[k], "_", meth[j], ".csv"))
+              paste0(path_combo, "CV_Avg/SD_Accuracy_", alg[k], "_", meth[j], ".csv"))
   }
 }
 
@@ -741,7 +740,7 @@ results_sd <- matrix(0, nrow=5, ncol=2)
 
 for (k in 1:2)
 {
-  setwd(paste0(path_combo, "CV_", alg_uni[k]))
+  setwd(paste0(path_combo, "CV_", alg[k]))
   
   for (j in 1:5)
   {
@@ -762,13 +761,13 @@ for (k in 1:2)
 }
 
 rownames(results_mean) <- meth
-colnames(results_mean) <- alg_uni
+colnames(results_mean) <- alg
 write.csv(results_mean, 
           paste0(path_combo, "CV_Avg/Mean_mism.csv"))
 
 
 rownames(results_sd) <- meth
-colnames(results_sd) <- alg_uni
+colnames(results_sd) <- alg
 
 write.csv(results_sd, 
           paste0(path_combo, "CV_Avg/SD_mism.csv"))
@@ -782,7 +781,7 @@ results_sd <- matrix(0, nrow=5, ncol=2)
 
 for (k in 1:2)
 {
-  setwd(paste0(path_combo, "CV_", alg_uni[k]))
+  setwd(paste0(path_combo, "CV_", alg[k]))
   
   for (j in 1:5)
   {
@@ -803,13 +802,13 @@ for (k in 1:2)
 }
 
 rownames(results_mean) <- meth
-colnames(results_mean) <- alg_uni
+colnames(results_mean) <- alg
 write.csv(results_mean, 
           paste0(path_combo, "CV_Avg/Mean_fn.csv"))
 
 
 rownames(results_sd) <- meth
-colnames(results_sd) <- alg_uni
+colnames(results_sd) <- alg
 
 write.csv(results_sd, 
           paste0(path_combo, "CV_Avg/SD_fn.csv"))

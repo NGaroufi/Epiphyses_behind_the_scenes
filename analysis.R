@@ -1,4 +1,4 @@
-setwd("C:/Users/Nefeli/Desktop/Lab/Διδακτορικό/Upper Lower Epiph/Lower Limbs")
+setwd("C:/Users/Nefeli/Desktop/Lab/Διδακτορικό/Upper Lower Epiph/Upper Limbs")
 
 # Library loading
 library(readr)
@@ -58,7 +58,7 @@ corstars <-function(x, method=c("pearson", "spearman"),
 
 
 # Set the bones vector
-bones <- c("Femur", "Tibia")
+bones <- c("Humerus", "Ulna")
 
 # Keep only the 20-80% variables from the files
 for (i in 1:2)
@@ -80,7 +80,7 @@ for (i in 1:2)
   
   png(paste0("Correlation plot - ", bones[i], ".png"), 
       width=1500, height=1500, res=300)
-  corrplot(cc, method="circle",type="upper",
+  corrplot(cc, method="circle",type="full",
            title=paste0("Correlation - ", bones[i]), mar=c(1,1,2,1),
            col=COL2('PuOr', 10), tl.col="black",
            cl.ratio = 0.15, tl.srt = 45)
